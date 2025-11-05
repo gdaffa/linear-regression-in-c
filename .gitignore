@@ -3,6 +3,8 @@
 
 # Object files
 *.o
+*.s
+*.i
 *.ko
 *.obj
 *.elf
@@ -53,3 +55,6 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Text Editor
+.vscode/
