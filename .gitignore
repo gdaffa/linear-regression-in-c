@@ -58,3 +58,7 @@ dkms.conf
 
 # Text Editor
 .vscode/
+
+# Notebook
+*.ipynb
+.ipynb_checkpoints
