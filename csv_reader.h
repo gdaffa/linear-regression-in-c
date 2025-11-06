@@ -7,16 +7,16 @@
 #include "data_type.h"
 
 struct {
-   const unsigned bufferSize;
+   const size_t bufferSize;
 } CSVProps = { BUFSIZ };
 
 typedef struct CSV {
-   float** data;
-   char**  labels;
-   char*   content;
-   size_t  rowTotal;
-   size_t  colTotal;
-   size_t  contentLen;
+   float_t** data;
+   char**    labels;
+   char*     content;
+   size_t    rowTotal;
+   size_t    colTotal;
+   size_t    contentLen;
 } CSV;
 
 /**
@@ -100,15 +100,15 @@ void parseData(CSV* csv)
    }
 
    //* property for `csv`
-   float** data = (float**) calloc(csv->rowTotal, sizeof(float*));
+   float_t** data = (float_t**) calloc(csv->rowTotal, sizeof(float_t*));
 
    char* row         = strtok(content, "\n");
    size_t rowIdx     = 0;
    size_t contentIdx = 0;
 
-   // loop throught every row and parse each column as float data
+   // loop throught every row and parse each column as float_t data
    while (row != NULL) {
-      data[rowIdx] = (float*) malloc(csv->colTotal * sizeof(float));
+      data[rowIdx] = (float_t*) malloc(csv->colTotal * sizeof(float_t));
       //! added to null terminator + 1
       contentIdx  += strlen(row) + 1;
 
