@@ -8,7 +8,7 @@ int main()
 
    // header, csv column name
    for (size_t col = 0; col < csv->colTotal; col++) {
-      fprintf(fout, col == 0 ? "%S" : ",%s", csv->labels[col]);
+      fprintf(fout, col == 0 ? "%s" : ",%s", csv->labels[col]);
    }
    fprintf(fout, "\n");
 
@@ -21,5 +21,5 @@ int main()
    }
 
    fclose(fout);
-   closeCSV(csv);
+   closeCSV(csv, true);
 }

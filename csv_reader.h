@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "data_type.h"
 
 struct {
    const unsigned bufferSize;
@@ -148,9 +149,9 @@ CSV* readCSV(const char* filename)
 }
 
 /**
- * Destroy CSV object recursively.
+ * Deeply destroy CSV object.
  */
-void closeCSV(CSV* csv)
+void closeCSV(CSV* csv, bool destroyData)
 {
    for (size_t i = 0; i < csv->colTotal; i++) {
       free(csv->labels[i]);
@@ -159,10 +160,24 @@ void closeCSV(CSV* csv)
       free(csv->data[i]);
    }
 
+   if (destroyData) {
+      free(csv->data);
+   }
    free(csv->content);
    free(csv->labels);
-   free(csv->data);
    free(csv);
+}
+
+/**
+ * Convert CSV data to matrix.
+ */
+Matrix* fromCSVtoMatrix(CSV* csv, bool destroy)
+{
+   Matrix* mtx   = calloc(1, sizeof(Matrix));
+   mtx->data     = csv->data;
+   mtx->rowTotal = csv->rowTotal;
+   mtx->colTotal = csv->colTotal;
+   closeCSV(csv, false);
 }
 
 #endif
