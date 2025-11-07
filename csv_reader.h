@@ -177,7 +177,11 @@ Matrix* fromCSVtoMatrix(CSV* csv, bool destroy)
    mtx->data     = csv->data;
    mtx->rowTotal = csv->rowTotal;
    mtx->colTotal = csv->colTotal;
-   closeCSV(csv, false);
+
+   if (destroy) {
+      closeCSV(csv, false);
+   }
+   return mtx;
 }
 
 #endif
