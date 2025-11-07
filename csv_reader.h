@@ -156,13 +156,13 @@ void closeCSV(CSV* csv, bool destroyData)
    for (size_t i = 0; i < csv->colTotal; i++) {
       free(csv->labels[i]);
    }
-   for (size_t i = 0; i < csv->rowTotal; i++) {
-      free(csv->data[i]);
-   }
-
    if (destroyData) {
+      for (size_t i = 0; i < csv->rowTotal; i++) {
+         free(csv->data[i]);
+      }
       free(csv->data);
    }
+
    free(csv->content);
    free(csv->labels);
    free(csv);
