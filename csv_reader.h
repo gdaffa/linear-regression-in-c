@@ -91,8 +91,10 @@ void parseContent(CSV* csv, FILE* fptr)
  */
 void parseData(CSV* csv)
 {
-   char* content = (char*) calloc(csv->contentLen + 1, 1);
-   strncpy(content, csv->content, csv->contentLen + 1);
+   //? str + '\0' + '\0'
+   //? strlen + 2 to prevent strtok that jumps to index '\0' + 1
+   char* content = (char*) calloc(csv->contentLen + 2, 1);
+   strncpy(content, csv->content, csv->contentLen + 2);
 
    // remove newline
    if (content[csv->contentLen - 1] == '\n') {
@@ -121,6 +123,7 @@ void parseData(CSV* csv)
          colIdx++;
       }
 
+      //? jump to index '\0' + 1
       row = strtok(content + contentIdx, "\n");
       rowIdx++;
    }
