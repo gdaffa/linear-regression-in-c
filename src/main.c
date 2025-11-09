@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "csv_reader.h"
-#include "lin_reg.h"
+#include "lib/csv_reader.h"
+#include "lib/lin_reg.h"
 
 int main(int argc, char* argv[])
 {
