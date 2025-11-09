@@ -8,7 +8,7 @@
  * else: both `long double`
  */
 #undef __FLT_EVAL_METHOD__
-#define __FLT_EVAL_METHOD__ 0
+#define __FLT_EVAL_METHOD__ 1
 
 #include <stdio.h>
 #include <stdbool.h>

@@ -140,6 +140,11 @@ CSV* readCSV(const char* filename)
    FILE* fptr = fopen(filename, "r");
    CSV* csv   = (CSV*) malloc(sizeof(CSV));
 
+   if (fptr == NULL) {
+      printf("\"%s\" is not found. Aborting the operation...", filename);
+      abort();
+   }
+
    char header[CSVProps.bufferSize];
    fgets(header, CSVProps.bufferSize, fptr);
 

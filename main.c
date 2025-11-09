@@ -1,25 +1,19 @@
 #include <stdio.h>
 #include "csv_reader.h"
+#include "lin_reg.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-   CSV* csv   = readCSV("input.csv");
-   FILE* fout = fopen("output.csv", "w");
-
-   // header, csv column name
-   for (size_t col = 0; col < csv->colTotal; col++) {
-      fprintf(fout, col == 0 ? "%s" : ",%s", csv->labels[col]);
-   }
-   fprintf(fout, "\n");
-
-   // main content, csv data
-   for (size_t row = 0; row < csv->rowTotal; row++) {
-      for (size_t col = 0; col < csv->colTotal; col++) {
-         fprintf(fout, col == 0 ? "%.3f" : ",%.3f", csv->data[row][col] * 5);
-      }
-      fprintf(fout, "\n");
+   if (argc < 3) {
+      puts("The argument must be <csv-file> <target-column>.");
+      return 1;
    }
 
-   fclose(fout);
+   CSV* csv = readCSV(argv[1]);
+   LinRegResult* lr = calcLinReg(fromCSVtoMatrix(csv, false), atoi(argv[2]) - 1);
+   printLinRegResult(stdout, lr);
+
+   closeLinRegResult(lr);
    closeCSV(csv, true);
+   return 0;
 }
