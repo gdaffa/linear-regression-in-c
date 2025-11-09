@@ -75,7 +75,7 @@ void parseContent(CSV* csv, FILE* fptr)
          content = (char*) realloc(content, contentSize);
       }
 
-      //! copy from null terminator
+      //? paste from null terminator
       strncpy(content + contentLen, buffer, bufferLen + 1);
       contentLen = newContentLen;
       rowTotal++;
@@ -111,7 +111,7 @@ void parseData(CSV* csv)
    // loop throught every row and parse each column as float_t data
    while (row != NULL) {
       data[rowIdx] = (float_t*) malloc(csv->colTotal * sizeof(float_t));
-      //! added to null terminator + 1
+      //? added to null terminator + 1
       contentIdx  += strlen(row) + 1;
 
       char*  col    = strtok(row, ",");
