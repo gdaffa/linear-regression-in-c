@@ -8,7 +8,7 @@
 
 struct {
    const size_t bufferSize;
-} CSVProps = { BUFSIZ };
+} pCSV = { BUFSIZ };
 
 typedef struct CSV {
    float_t** data;
@@ -22,7 +22,7 @@ typedef struct CSV {
 /**
  * Split column label and calculate total column.
  */
-void parseLabels(CSV* csv, char* header)
+void fCSV_parseLabels(CSV* csv, char* header)
 {
    //* property for `csv`
    char** labels   = (char**) malloc(0);
@@ -55,18 +55,18 @@ void parseLabels(CSV* csv, char* header)
 /**
  * Parse content as a regular string.
  */
-void parseContent(CSV* csv, FILE* fptr)
+void fCSV_parseContent(CSV* csv, FILE* fptr)
 {
    size_t contentLen  = 0;
-   size_t contentSize = CSVProps.bufferSize;
-   char   buffer[CSVProps.bufferSize];
+   size_t contentSize = pCSV.bufferSize;
+   char   buffer[pCSV.bufferSize];
 
    //* property for `csv`
    char*  content  = (char*) calloc(contentSize, 1);
    size_t rowTotal = 0;
 
    // loop throught every line and combine it with `content`
-   while (fgets(buffer, CSVProps.bufferSize, fptr) != NULL) {
+   while (fgets(buffer, pCSV.bufferSize, fptr) != NULL) {
       size_t bufferLen     = strlen(buffer);
       size_t newContentLen = contentLen + bufferLen;
 
@@ -89,7 +89,7 @@ void parseContent(CSV* csv, FILE* fptr)
 /**
  * Parse the content as a float data.
  */
-void parseData(CSV* csv)
+void fCSV_parseData(CSV* csv)
 {
    //? str + '\0' + '\0'
    //? strlen + 2 to prevent strtok that jumps to index '\0' + 1
@@ -145,12 +145,12 @@ CSV* readCSV(const char* filename)
       abort();
    }
 
-   char header[CSVProps.bufferSize];
-   fgets(header, CSVProps.bufferSize, fptr);
+   char header[pCSV.bufferSize];
+   fgets(header, pCSV.bufferSize, fptr);
 
-   parseLabels(csv, header);
-   parseContent(csv, fptr);
-   parseData(csv);
+   fCSV_parseLabels(csv, header);
+   fCSV_parseContent(csv, fptr);
+   fCSV_parseData(csv);
 
    fclose(fptr);
    return csv;
