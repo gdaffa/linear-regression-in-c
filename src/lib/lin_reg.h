@@ -187,7 +187,7 @@ void closeLinRegResult(LinRegResult* var)
  */
 void printLinRegResult(FILE* fptr, LinRegResult* result)
 {
-   char var = 'a';
+   char var = result->slopeSize > 1 ? 'a' : 'x';
    fprintf(fptr, "%lf", result->intercept);
    for (size_t i = 0; i < result->slopeSize; i++) {
       fprintf(fptr, " + %lf%c", result->slope[i], var + i);
