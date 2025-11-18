@@ -20,11 +20,12 @@ struct {
 };
 
 /**
- * Split the data to feature and target data to the given pointer.
+ * Split the data to feature and target data.
  */
-void fLinReg_splitFeatTarg(Matrix* mtx, float_t* featData, float_t* targData, size_t targCol)
+void fLinReg_splitFeatTarg(Matrix* mtx, float_t** featData, float_t* targData, size_t targCol)
 {
    for (size_t rowIdx = 0; rowIdx < mtx->rowTotal; rowIdx++) {
+      featData[rowIdx]  = (float_t*) malloc(sizeof(float_t*) * mtx->colTotal);
       size_t featColIdx = 0;
 
       for (size_t colIdx = 0; colIdx < mtx->colTotal; colIdx++) {
@@ -33,11 +34,22 @@ void fLinReg_splitFeatTarg(Matrix* mtx, float_t* featData, float_t* targData, si
             continue;
          }
 
-         //? it's 2D array that flattened into 1D array
-         featData[rowIdx * (mtx->colTotal - 1) + featColIdx] = mtx->data[rowIdx][colIdx];
+         featData[rowIdx][colIdx] = mtx->data[rowIdx][colIdx];
          featColIdx++;
       }
    }
+}
+
+/**
+ * Free feature and target data after linear regression calculation.
+ */
+void fLinReg_freeFeatTarg(Matrix* mtx, float_t** featData, float_t* targData)
+{
+   for (size_t rowIdx = 0; rowIdx < mtx->rowTotal; rowIdx++) {
+      free(featData[rowIdx]);
+   }
+   free(featData);
+   free(targData);
 }
 
 /**
@@ -129,9 +141,10 @@ LinRegResult* calcLinReg(Matrix* mtx, size_t targCol)
       var->slope[slopeIdx] = slopeIdx + 1;
    }
 
-   float_t featData[mtx->rowTotal][slopeSize];
-   float_t targData[mtx->rowTotal];
-   fLinReg_splitFeatTarg(mtx, (float_t*) featData, targData, targCol);
+   float_t** featData = (float_t**) malloc( sizeof(float_t*) * mtx->rowTotal);
+   float_t*  targData = (float_t*) malloc( sizeof(float_t) * mtx->rowTotal);
+
+   fLinReg_splitFeatTarg(mtx, featData, targData, targCol);
 
    size_t i;
    for (i = 0; i < pLinReg_hyperParam.iterMax; i++) {
@@ -165,6 +178,7 @@ LinRegResult* calcLinReg(Matrix* mtx, size_t targCol)
          break;
       }
    }
+   fLinReg_freeFeatTarg(mtx, featData, targData);
 
    if (i == pLinReg_hyperParam.iterMax) {
       puts("Operation reached the maximum iteration. The result might be bad.");
