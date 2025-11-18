@@ -42,7 +42,7 @@ void fCSV_parseLabels(CSV* csv, char* header)
       }
 
       labels      = (char**) realloc(labels, sizeof(char*) * colTotal);
-      labels[idx] = (char*) calloc(labelLen + 1, 1);
+      labels[idx] = (char*) malloc(labelLen + 1);
       strncpy(labels[idx], label, labelLen + 1);
 
       label = strtok(NULL, ",");
@@ -62,7 +62,7 @@ void fCSV_parseContent(CSV* csv, FILE* fptr)
    char   buffer[pCSV.bufferSize];
 
    //* property for `csv`
-   char*  content  = (char*) calloc(contentSize, 1);
+   char*  content  = (char*) malloc(contentSize);
    size_t rowTotal = 0;
 
    // loop throught every line and combine it with `content`
@@ -102,7 +102,7 @@ void fCSV_parseData(CSV* csv)
    }
 
    //* property for `csv`
-   float_t** data = (float_t**) calloc(csv->rowTotal, sizeof(float_t*));
+   float_t** data = (float_t**) malloc(sizeof(float_t*) * csv->rowTotal);
 
    char* row         = strtok(content, "\n");
    size_t rowIdx     = 0;
@@ -110,7 +110,7 @@ void fCSV_parseData(CSV* csv)
 
    // loop throught every row and parse each column as float_t data
    while (row != NULL) {
-      data[rowIdx] = (float_t*) malloc(csv->colTotal * sizeof(float_t));
+      data[rowIdx] = (float_t*) malloc(sizeof(float_t) * csv->colTotal);
       //? added to null terminator + 1
       contentIdx  += strlen(row) + 1;
 
@@ -181,7 +181,7 @@ void closeCSV(CSV* csv, bool destroyData)
  */
 Matrix* fromCSVtoMatrix(CSV* csv, bool destroy)
 {
-   Matrix* mtx   = calloc(1, sizeof(Matrix));
+   Matrix* mtx   = malloc(sizeof(Matrix));
    mtx->data     = csv->data;
    mtx->rowTotal = csv->rowTotal;
    mtx->colTotal = csv->colTotal;

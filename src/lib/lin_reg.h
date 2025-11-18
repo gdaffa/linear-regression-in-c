@@ -129,20 +129,20 @@ bool fLinReg_gradDesc(LinRegResult* var, float_t sumDervIntercept, float_t* sumD
  */
 LinRegResult* calcLinReg(Matrix* mtx, size_t targCol)
 {
-   LinRegResult* var = (LinRegResult*) calloc(1, sizeof(LinRegResult));
+   LinRegResult* var = (LinRegResult*) malloc(sizeof(LinRegResult));
 
    size_t slopeSize = mtx->colTotal - 1;
 
    var->slopeSize = slopeSize;
-   var->slope     = (float_t*) calloc(slopeSize, sizeof(float_t));
+   var->slope     = (float_t*) malloc(sizeof(float_t) * slopeSize);
    var->intercept = 0;
 
    for (size_t slopeIdx = 0; slopeIdx < slopeSize; slopeIdx++) {
       var->slope[slopeIdx] = slopeIdx + 1;
    }
 
-   float_t** featData = (float_t**) malloc( sizeof(float_t*) * mtx->rowTotal);
-   float_t*  targData = (float_t*) malloc( sizeof(float_t) * mtx->rowTotal);
+   float_t** featData = (float_t**) malloc(sizeof(float_t*) * mtx->rowTotal);
+   float_t*  targData = (float_t*) malloc(sizeof(float_t) * mtx->rowTotal);
 
    fLinReg_splitFeatTarg(mtx, featData, targData, targCol);
 
