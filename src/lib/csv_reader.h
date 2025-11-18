@@ -25,7 +25,7 @@ typedef struct CSV {
 void fCSV_parseLabels(CSV* csv, char* header)
 {
    //* property for `csv`
-   char** labels   = (char**) malloc(0);
+   char** labels   = malloc(0);
    size_t colTotal = 0;
 
    char* label = strtok(header, ",");
@@ -41,8 +41,8 @@ void fCSV_parseLabels(CSV* csv, char* header)
          labelLen--;
       }
 
-      labels      = (char**) realloc(labels, sizeof(char*) * colTotal);
-      labels[idx] = (char*) malloc(labelLen + 1);
+      labels      = realloc(labels, sizeof(char*) * colTotal);
+      labels[idx] = malloc(labelLen + 1);
       strncpy(labels[idx], label, labelLen + 1);
 
       label = strtok(NULL, ",");
@@ -62,7 +62,7 @@ void fCSV_parseContent(CSV* csv, FILE* fptr)
    char   buffer[pCSV.bufferSize];
 
    //* property for `csv`
-   char*  content  = (char*) malloc(contentSize);
+   char*  content  = malloc(contentSize);
    size_t rowTotal = 0;
 
    // loop throught every line and combine it with `content`
@@ -72,7 +72,7 @@ void fCSV_parseContent(CSV* csv, FILE* fptr)
 
       if (newContentLen > contentSize - 1) {
          contentSize <<= 1;
-         content = (char*) realloc(content, contentSize);
+         content = realloc(content, contentSize);
       }
 
       //? paste from null terminator
@@ -93,7 +93,7 @@ void fCSV_parseData(CSV* csv)
 {
    //? str + '\0' + '\0'
    //? strlen + 2 to prevent strtok that jumps to index '\0' + 1
-   char* content = (char*) malloc(csv->contentLen + 2);
+   char* content = malloc(csv->contentLen + 2);
    strncpy(content, csv->content, csv->contentLen + 2);
 
    // remove newline
@@ -102,7 +102,7 @@ void fCSV_parseData(CSV* csv)
    }
 
    //* property for `csv`
-   float_t** data = (float_t**) malloc(sizeof(float_t*) * csv->rowTotal);
+   float_t** data = malloc(sizeof(float_t*) * csv->rowTotal);
 
    char* row         = strtok(content, "\n");
    size_t rowIdx     = 0;
@@ -110,7 +110,7 @@ void fCSV_parseData(CSV* csv)
 
    // loop throught every row and parse each column as float_t data
    while (row != NULL) {
-      data[rowIdx] = (float_t*) malloc(sizeof(float_t) * csv->colTotal);
+      data[rowIdx] = malloc(sizeof(float_t) * csv->colTotal);
       //? added to null terminator + 1
       contentIdx  += strlen(row) + 1;
 
@@ -138,7 +138,7 @@ void fCSV_parseData(CSV* csv)
 CSV* readCSV(const char* filename)
 {
    FILE* fptr = fopen(filename, "r");
-   CSV* csv   = (CSV*) malloc(sizeof(CSV));
+   CSV* csv   = malloc(sizeof(CSV));
 
    if (fptr == NULL) {
       printf("\"%s\" is not found. Aborting the operation...", filename);

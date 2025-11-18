@@ -25,7 +25,7 @@ struct {
 void fLinReg_splitFeatTarg(Matrix* mtx, float_t** featData, float_t* targData, size_t targCol)
 {
    for (size_t rowIdx = 0; rowIdx < mtx->rowTotal; rowIdx++) {
-      featData[rowIdx]  = (float_t*) malloc(sizeof(float_t*) * mtx->colTotal);
+      featData[rowIdx]  = malloc(sizeof(float_t*) * mtx->colTotal);
       size_t featColIdx = 0;
 
       for (size_t colIdx = 0; colIdx < mtx->colTotal; colIdx++) {
@@ -129,20 +129,20 @@ bool fLinReg_gradDesc(LinRegResult* var, float_t sumDervIntercept, float_t* sumD
  */
 LinRegResult* calcLinReg(Matrix* mtx, size_t targCol)
 {
-   LinRegResult* var = (LinRegResult*) malloc(sizeof(LinRegResult));
+   LinRegResult* var = malloc(sizeof(LinRegResult));
 
    size_t slopeSize = mtx->colTotal - 1;
 
    var->slopeSize = slopeSize;
-   var->slope     = (float_t*) malloc(sizeof(float_t) * slopeSize);
+   var->slope     = malloc(sizeof(float_t) * slopeSize);
    var->intercept = 0;
 
    for (size_t slopeIdx = 0; slopeIdx < slopeSize; slopeIdx++) {
       var->slope[slopeIdx] = slopeIdx + 1;
    }
 
-   float_t** featData = (float_t**) malloc(sizeof(float_t*) * mtx->rowTotal);
-   float_t*  targData = (float_t*) malloc(sizeof(float_t) * mtx->rowTotal);
+   float_t** featData = malloc(sizeof(float_t*) * mtx->rowTotal);
+   float_t*  targData = malloc(sizeof(float_t) * mtx->rowTotal);
 
    fLinReg_splitFeatTarg(mtx, featData, targData, targCol);
 
