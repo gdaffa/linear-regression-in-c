@@ -93,7 +93,7 @@ void fCSV_parseData(CSV* csv)
 {
    //? str + '\0' + '\0'
    //? strlen + 2 to prevent strtok that jumps to index '\0' + 1
-   char content[csv->contentLen + 2];
+   char* content = (char*) malloc(csv->contentLen + 2);
    strncpy(content, csv->content, csv->contentLen + 2);
 
    // remove newline
