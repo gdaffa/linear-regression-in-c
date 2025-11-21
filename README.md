@@ -47,15 +47,19 @@ And then run the program using with one of these command.
 
 For Windows:
 ```bash
-./main.exe <csv-file> <target-column-index>
+./main.exe [<options>]
 ```
 
 For Linux:
 ```bash
-./main <csv-filepath> <target-column-index>
+./main [<options>]
 ```
 
-The program accept 2 argument, the CSV file path, and target column index.
+The program accept 4 argument, including:
+- `-d, --dataset <file>`: Dataset file path **(required)**.
+- `-t, --target <column>`: Target column index **(required)**.
+- `-l, --learning-rate <rate>`: Learning rate hyper parameter.
+- `-m, --max-step-size <float>`: Max step size for program to stop.
 
 > [!WARNING]
 > The program should take **less than 10 seconds** to finish full iteration. If the
@@ -74,13 +78,13 @@ Where {var-col-x} represents an automatically assigned variable name (a, b, c, â
 
 #### Command line:
 ```bash
-gcc main.c -o main
-./main input.csv 2
+gcc src/main.c -o main
+./main -d src/data/2-feat.csv -t 2 --learning-rate 1e-5 --max-steps-size 1e-6
 ```
 
 #### Output:
 ```
-14.570945 + 1.468263a
+14.570946 + 1.468263a
 ```
 
 ## Future
